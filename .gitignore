@@ -1,0 +1,11 @@
+﻿# Unreal generated folders
+LATTICE/Binaries/
+LATTICE/DerivedDataCache/
+LATTICE/Intermediate/
+LATTICE/Saved/
+LATTICE/.vs/
+LATTICE/*.sln
+
+# OS
+Thumbs.db
+Desktop.ini
