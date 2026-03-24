@@ -21,6 +21,24 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
     ELatticeScale, NewScale
 );
 
+USTRUCT(BlueprintType)
+struct FLatticeScalePhysics
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics")
+    float GravityScale = 1.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics")
+    float MovementSpeed = 600.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics")
+    float JumpVelocity = 700.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Physics")
+    float AirResistance = 0.01f;
+};
+
 UCLASS()
 class LATTICE_API ULatticeScaleManager : public UGameInstanceSubsystem
 {
@@ -35,6 +53,8 @@ public:
 
     UFUNCTION(BlueprintPure, Category = "Lattice|Scale")
     ELatticeScale GetCurrentScale() const { return CurrentScale; }
+    UFUNCTION(BlueprintPure, Category = "Lattice|Scale")
+    FLatticeScalePhysics GetPhysicsForScale(ELatticeScale Scale) const;
 
 private:
     ELatticeScale CurrentScale = ELatticeScale::MACRO;
