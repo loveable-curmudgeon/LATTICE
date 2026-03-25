@@ -1,4 +1,4 @@
-ï»¿# LATTICE_BUILD_PLAN.md
+# LATTICE_BUILD_PLAN.md
 _Phased development roadmap for LATTICE. Read LATTICE_CONTROL.md first._
 
 ---
@@ -12,17 +12,17 @@ Do not mark a phase complete until all exit criteria are verified in engine.
 
 ---
 
-## Phase 0 â€” Foundation
+## Phase 0 — Foundation
 **Status: COMPLETE**
 
 ### Entry Criteria
 - Fresh Unreal Engine 5.7 project
 
 ### Exit Criteria
-- Project opens in UE 5.7 âœ…
-- C++ compiles clean âœ…
-- Player spawns and moves âœ…
-- All assets committed to git âœ…
+- Project opens in UE 5.7 ?
+- C++ compiles clean ?
+- Player spawns and moves ?
+- All assets committed to git ?
 
 ### Deliverables
 - LatticeScaleManager (GameInstanceSubsystem)
@@ -36,12 +36,12 @@ Do not mark a phase complete until all exit criteria are verified in engine.
 
 ---
 
-## Phase 1 â€” Core Loop Prototype
-**Status: IN PROGRESS**
+## Phase 1 — Core Loop Prototype
+**Status: COMPLETE**
 
 The goal of this phase is one complete, playable loop:
-spawn â†’ explore â†’ find device â†’ trigger scale transition â†’ physics change felt â†’
-find team member â†’ reach portal â†’ level ends.
+spawn ? explore ? find device ? trigger scale transition ? physics change felt ?
+find team member ? reach portal ? level ends.
 No polish. No puzzles yet. Just the skeleton of the loop working end to end.
 
 ### Entry Criteria
@@ -64,12 +64,12 @@ No polish. No puzzles yet. Just the skeleton of the loop working end to end.
 
 ### Notes
 - Physics values at this stage do not need to be scientifically accurate yet
-- Art and level design do not matter here â€” boxes and BSP are fine
+- Art and level design do not matter here — boxes and BSP are fine
 - The point is proving the loop works, not that it looks or feels good
 
 ---
 
-## Phase 2 â€” Character & Companion System
+## Phase 2 — Character & Companion System
 **Status: NOT STARTED**
 
 ### Entry Criteria
@@ -92,17 +92,17 @@ No polish. No puzzles yet. Just the skeleton of the loop working end to end.
 
 ### Notes
 - Character backstories and dialog belong in LATTICE-STORY
-- Character selection UI will be redesigned in Phase 11 â€” keep it functional for now
+- Character selection UI will be redesigned in Phase 11 — keep it functional for now
 - AI companion complexity will grow in later phases as puzzle interactions are added
 
 ---
 
-## Phase 3 â€” Scale Physics Research & Verification
+## Phase 3 — Scale Physics Research & Verification
 **Status: NOT STARTED**
 
 This is a research and design phase, not a coding phase.
 No scale content gets built until this phase is complete.
-The puzzles in LATTICE exist to teach real physics â€” that means the physics must be
+The puzzles in LATTICE exist to teach real physics — that means the physics must be
 understood and documented before puzzles are designed.
 
 ### Entry Criteria
@@ -117,24 +117,24 @@ understood and documented before puzzles are designed.
 - Physics profiles reviewed and signed off before Phase 4 begins
 
 ### Deliverables (in LATTICE-DESIGN, not this repo)
-- SCALE_PHYSICS_REFERENCE.md â€” one section per scale
+- SCALE_PHYSICS_REFERENCE.md — one section per scale
 - MACRO: human scale, baseline Newtonian physics
-- MICRO: insect/cellular scale â€” surface tension dominates, air resistance significant,
+- MICRO: insect/cellular scale — surface tension dominates, air resistance significant,
   gravity relatively weak, Van der Waals forces present
-- NANO: molecular scale â€” Brownian motion, quantum tunneling begins, thermal noise significant
-- QUANTUM: atomic/subatomic â€” quantum mechanics dominant, probability-based behavior,
+- NANO: molecular scale — Brownian motion, quantum tunneling begins, thermal noise significant
+- QUANTUM: atomic/subatomic — quantum mechanics dominant, probability-based behavior,
   classical physics largely breaks down
-- GEO: geological scale â€” tectonic forces, erosion timescales, gravity dominates everything
-- COSMIC: planetary/stellar scale â€” orbital mechanics, relativity effects, gravity at extremes
+- GEO: geological scale — tectonic forces, erosion timescales, gravity dominates everything
+- COSMIC: planetary/stellar scale — orbital mechanics, relativity effects, gravity at extremes
 
 ### Notes
-- This phase will take as long as it needs to â€” do not rush it
+- This phase will take as long as it needs to — do not rush it
 - Consult real physics references, not just intuition
 - Each scale's puzzle concepts feed directly into Phase 4
 
 ---
 
-## Phase 4 â€” Puzzle Framework
+## Phase 4 — Puzzle Framework
 **Status: NOT STARTED**
 
 ### Entry Criteria
@@ -155,14 +155,14 @@ understood and documented before puzzles are designed.
 - Puzzle state tracking (solved/unsolved persists correctly)
 
 ### Notes
-- Puzzle types must emerge from Phase 3 physics research â€” do not invent puzzles
+- Puzzle types must emerge from Phase 3 physics research — do not invent puzzles
   and then try to attach physics to them, it goes the other way
 - Each puzzle should have a clear "aha moment" where the player understands
   something real about physics
 
 ---
 
-## Phases 5â€“10 â€” Scale Content (One Phase Per Scale)
+## Phases 5–10 — Scale Content (One Phase Per Scale)
 
 Each scale follows the same pattern:
 
@@ -174,18 +174,18 @@ Each scale follows the same pattern:
 6. Full playthrough tested
 7. All assets committed
 
-### Phase 5 â€” MACRO Scale Content
-### Phase 6 â€” MICRO Scale Content
-### Phase 7 â€” NANO Scale Content
-### Phase 8 â€” QUANTUM Scale Content
-### Phase 9 â€” GEO Scale Content
-### Phase 10 â€” COSMIC Scale Content
+### Phase 5 — MACRO Scale Content
+### Phase 6 — MICRO Scale Content
+### Phase 7 — NANO Scale Content
+### Phase 8 — QUANTUM Scale Content
+### Phase 9 — GEO Scale Content
+### Phase 10 — COSMIC Scale Content
 
 _Each phase will be detailed fully when it becomes the active phase._
 
 ---
 
-## Phase 11 â€” Polish, UI, Audio, Ship
+## Phase 11 — Polish, UI, Audio, Ship
 **Status: NOT STARTED**
 
 _To be detailed when Phase 10 is complete._
@@ -197,7 +197,7 @@ performance optimization, final playtesting, release build.
 
 ## Dependency Chain
 
-Foundation â†’ Core Loop â†’ Characters â†’ Physics Research â†’ Puzzle Framework â†’ Scale Content â†’ Ship
+Foundation ? Core Loop ? Characters ? Physics Research ? Puzzle Framework ? Scale Content ? Ship
 
 Physics research is the backbone of the entire game.
 No scale content phase begins without the physics reference for that scale being complete.

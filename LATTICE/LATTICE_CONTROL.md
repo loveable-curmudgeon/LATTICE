@@ -126,12 +126,12 @@ Physics values must be reviewed against real science before any scale goes into 
 
 ## Active Phase
 
-**Phase 1 - Core Loop Prototype — IN PROGRESS**
+**Phase 1 - Core Loop Prototype — COMPLETE**
 
-Scale transition fires confirmed. Next tasks:
-- Fix mouse look in Play mode
-- Make AncientTechDevice visible (assign a placeholder mesh)
-- Verify physics parameters actually change when transition fires
+Phase 1 complete. Next tasks:
+- Begin Phase 2: Character & Companion System
+
+
 
 See `LATTICE_BUILD_PLAN.md` for full phase breakdown.
 
