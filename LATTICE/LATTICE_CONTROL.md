@@ -1,180 +1,151 @@
-# LATTICE — Project Control Document
-*Last updated: 2026-03-23*
+ï»¿# LATTICE_CONTROL.md
+_Master context document. Every new chat session working on LATTICE-CODE must read this first._
 
 ---
 
-## 1. Concept
+## Project Overview
 
-LATTICE is a third-person physics puzzle game inspired by the short film "Powers of Ten."
-A joint military/science team investigates ancient technology discovered when a natural
-disaster exposes a buried temple. The tech activates and scatters the team across different
-physical scales. The player must navigate each scale — where physics behaves differently —
-to rescue each team member. Rescued members then assist in subsequent levels.
+**LATTICE** is a single-player, third-person educational physics puzzle game built in Unreal Engine 5.7.
 
----
+Inspired by the short film *Powers of Ten*, the game follows a joint military/science team
+investigating ancient technology uncovered after a natural disaster exposes a buried temple.
+The tech sends team members to different physical scales â€” from human scale down to atomic,
+and up to geological and cosmic. Physics behaves differently at each scale, grounded in real
+science. The player must solve scale-specific puzzles to locate and rescue team members, who
+then join future levels as playable or supporting characters.
 
-## 2. Tech Stack
+LATTICE is an educational game first. The goal is to make educational games that are actually
+fun. Physics accuracy is a core design value â€” parameters must be scientifically grounded, not
+just whatever feels good. A separate reference document in LATTICE-DESIGN tracks the scientific
+basis for each scale's physics profile.
 
-| Tool | Version | Notes |
-|---|---|---|
-| Engine | Unreal Engine 5.7 | C++ / Maximum Quality project |
-| IDE | Visual Studio 2022 (v18) | Community edition |
-| Repo | GitLab | gitlab.com/loveable_curmudgeon/lattice |
-| OS | Windows 11 | Developer PowerShell for CLI work |
-| Git LFS | Enabled | For large binary assets |
+This is a long-term solo project.
 
 ---
 
-## 3. Locked Design Decisions
+## Developer Profile
 
-| Question | Decision |
+- **Developer:** Regina (solo)
+- **Background:** Engineering degree, college-level C++ knowledge, beginner Unreal experience
+- **OS:** Windows 11
+- **Engine:** Unreal Engine 5.7
+- **IDE:** Visual Studio 2022
+- **CLI:** Developer PowerShell (from Windows search, NOT from inside Visual Studio)
+- **Repo:** gitlab.com/loveable_curmudgeon/lattice
+- **Project path:** `C:\Users\megan\Documents\lattice\LATTICE`
+- **Git note:** Repo root is `LATTICE\` but project files live one level deeper at `LATTICE\LATTICE\`.
+  Git commands run from repo root must use `LATTICE/Content/...` paths.
+
+---
+
+## Compile & Run
+
+- **Live compile:** `Ctrl+Alt+F11` inside Unreal Editor
+- **Target:** `LATTICEEditor Win64 Development`
+- **Play in Editor:** Green Play button in Unreal Editor toolbar
+
+---
+
+## Project Structure (Three Claude Projects)
+
+| Project | Purpose |
 |---|---|
-| Scale transition trigger | Player interacts with ancient tech device |
-| Number of scales | 6 |
-| Player perspective | Third-person |
-| Team scatter method | Natural disaster triggers ancient tech — random scatter |
-| Level order | Linear — one scale unlocks the next |
+| **LATTICE-CODE** (this project) | Engine, C++, Blueprints, systems architecture, build plan |
+| **LATTICE-STORY** | Lore bible, character profiles, dialog, world history, narrative |
+| **LATTICE-DESIGN** | Game design document, puzzle specs, level briefs, physics reference â€” bridges mechanics and story |
+
+Design decisions must respect both code constraints and story logic. When they conflict,
+open LATTICE-DESIGN to resolve it.
 
 ---
 
-## 4. The 6 Scales
+## Architecture Overview
 
-| Order | Scale | Size Reference | Dominant Physics |
-|---|---|---|---|
-| 1 | MACRO | Human / temple | Normal physics — tutorial / home base |
-| 2 | MICRO | Insect / dust grain | Surface tension, Van der Waals adhesion, relative strength multiplied |
-| 3 | NANO | Cellular / molecular | Brownian motion, diffusion, osmosis, thermal noise visible |
-| 4 | QUANTUM | Atomic / sub-atomic | Tunneling, superposition, wave-particle duality, probability-based movement |
-| 5 | GEO | Geological / city-sized | Rock flows like fluid, extreme pressure, seismic waves, tectonic forces |
-| 6 | COSMIC | Planetary / stellar | Gravity dominates, orbital mechanics, no air resistance, tidal forces |
+### Core Philosophy
+- **Make LATTICE excellent** â€” purpose-built decisions are fine, do not sacrifice quality for reusability
+- **Reusability is a bonus, not a goal** â€” if something is naturally reusable, great, but don't engineer for it
+- **C++ for systems** â€” anything that needs to be fast, shared, or data-driven
+- **Blueprint for content** â€” level-specific logic, designer-facing configuration, one-off behaviors
+- **Physics accuracy is non-negotiable** â€” every scale must reflect real science
 
-Level arc: start familiar ? go smaller and stranger ? swing to enormous for the finale.
-COSMIC is the final reveal — the ancient tech's true origin.
+### Key Systems
 
----
+#### LatticeScaleManager (GameInstanceSubsystem)
+- Lives on the GameInstance â€” persists across level loads
+- Single source of truth for current scale state
+- Broadcasts `OnScaleChanged` delegate when scale transitions occur
+- All other systems react to this delegate rather than polling
+- **Why a subsystem:** Avoids singleton anti-patterns, automatically available to any class
+  that has a GameInstance reference, survives level transitions
 
-## 5. Physics Parameters Per Scale
+#### LatticePlayerCharacter (ACharacter subclass)
+- Listens to `OnScaleChanged` and applies physics parameters
+- Uses Enhanced Input system (IMC_Default, IA_Move, IA_jump)
+- Physics per scale defined in `FLatticeScalePhysics` struct inside LatticeScaleManager
 
-Defined in LatticeScaleManager.cpp — GetPhysicsForScale()
+#### AncientTechDevice (AActor subclass)
+- Placed in levels as the trigger for scale transitions
+- Calls `ScaleManager->TransitionToScale(TargetScale)` on activation
+- One-shot by default (`bHasBeenActivated` flag)
 
-| Scale | GravityScale | MovementSpeed | JumpVelocity | AirResistance |
-|---|---|---|---|---|
-| MACRO | 1.0 | 600 | 700 | 0.01 |
-| MICRO | 0.2 | 400 | 1200 | 0.8 |
-| NANO | 0.05 | 200 | 1800 | 2.0 |
-| QUANTUM | 0.001 | 100 | 2400 | 0.0 |
-| GEO | 4.0 | 1200 | 400 | 0.0 |
-| COSMIC | 0.0 | 2000 | 0 | 0.0 |
+#### Scale Enum (ELatticeScale)
+Six scales defined: MACRO, MICRO, NANO, QUANTUM, GEO, COSMIC
+Each has its own physics profile. MACRO is human scale and the starting point.
+Physics values must be reviewed against real science before any scale goes into active development.
 
----
+### Blueprint Assets (must be committed to git immediately after creation)
+- `BP_LatticePlayerCharacter` â€” inherits LatticePlayerCharacter, has input assets assigned
+- `BP_LatticeGameMode` â€” sets BP_LatticePlayerCharacter as Default Pawn Class
 
-## 6. Content Folder Structure
-```
-Content/
-+-- AncientTech/
-+-- Characters/
-¦   +-- Player/
-¦   +-- TeamNPC/
-¦   +-- Shared/
-+-- Core/
-¦   +-- GameMode/
-¦   +-- ScaleSystem/
-¦   +-- Physics/
-¦   +-- SaveGame/
-+-- Scales/
-¦   +-- MACRO/   (Blueprints/ Maps/ Assets/)
-¦   +-- MICRO/   (Blueprints/ Maps/ Assets/)
-¦   +-- NANO/    (Blueprints/ Maps/ Assets/)
-¦   +-- QUANTUM/ (Blueprints/ Maps/ Assets/)
-¦   +-- GEO/     (Blueprints/ Maps/ Assets/)
-¦   +-- COSMIC/  (Blueprints/ Maps/ Assets/)
-+-- Shared/
-```
+### Input Assets (Content/Core/)
+- `IMC_Default` â€” Input Mapping Context
+- `IA_Move` â€” Move action
+- `IA_jump` â€” Jump action
 
 ---
 
-## 7. C++ Classes Written
+## Current State (as of 2026-03-24)
 
-All source files live in: Source/LATTICE/
-
-### LatticeScaleManager (.h / .cpp)
-- Parent: UGameInstanceSubsystem
-- Purpose: Single source of truth for current scale. Persists across level loads.
-- Key members:
-  - ELatticeScale enum — MACRO, MICRO, NANO, QUANTUM, GEO, COSMIC
-  - FLatticeScalePhysics struct — GravityScale, MovementSpeed, JumpVelocity, AirResistance
-  - FOnScaleChanged delegate — broadcast when scale changes
-  - TransitionToScale(ELatticeScale) — call this to shift scales
-  - GetCurrentScale() — returns current scale
-  - GetPhysicsForScale(ELatticeScale) — returns physics params for any scale
-
-### LatticePlayerCharacter (.h / .cpp)
-- Parent: ACharacter
-- Purpose: The player's third-person character. Listens for scale changes and
-  applies new physics parameters to the CharacterMovementComponent instantly.
-- Key flow: BeginPlay ? gets ScaleManager ? binds OnScaleChanged delegate ?
-  ApplyScalePhysics() updates GravityScale, MaxWalkSpeed, JumpZVelocity,
-  BrakingFrictionFactor on the movement component.
-
-### LatticeGameMode (.h / .cpp)
-- Parent: AGameModeBase
-- Purpose: Sets ALatticePlayerCharacter as DefaultPawnClass.
-  Must be set as default GameMode in Project Settings.
-
-### AncientTechDevice (.h / .cpp)
-- Parent: AActor
-- Purpose: Placeable actor in levels. When Activate() is called (by player
-  interaction), it tells the ScaleManager to transition to TargetScale.
-  Can only be activated once (bHasBeenActivated flag).
-- Key properties (editable in Unreal):
-  - TargetScale — which scale this device sends the player to
-  - bHasBeenActivated — prevents double activation
+| Item | Status |
+|---|---|
+| Project opens in UE 5.7 | YES |
+| C++ compiles clean | YES |
+| Player spawns and moves | YES |
+| BP_LatticePlayerCharacter committed to git | YES |
+| BP_LatticeGameMode committed to git | YES |
+| Scale transition tested in game | NO |
+| AncientTechDevice placed in level | NO |
+| MACRO_Level_01 playable | PARTIAL - floor and spawn point only |
+| Physics values reviewed against real science | NO |
 
 ---
 
-## 8. How the Systems Connect
+## Active Phase
 
-Player finds device
-  ? Activate() called on AncientTechDevice
-  ? AncientTechDevice calls ScaleManager->TransitionToScale(TargetScale)
-  ? ScaleManager updates CurrentScale
-  ? ScaleManager broadcasts OnScaleChanged delegate
-  ? LatticePlayerCharacter hears broadcast
-  ? ApplyScalePhysics() applies new physics values to movement component
+**Phase 0 - Foundation Verified** - we are here
+Next task: Write LATTICE_BUILD_PLAN.md, then place AncientTechDevice in MACRO_Level_01
+and trigger one scale transition.
+
+See `LATTICE_BUILD_PLAN.md` for full phase breakdown.
 
 ---
 
-## 9. What Has NOT Been Done Yet
+## Rules for This Project
 
-- [ ] Set LatticeGameMode as default in Project Settings (Unreal Editor)
-- [ ] Create first playable map (MACRO level)
-- [ ] Place AncientTechDevice in map and test scale transition
-- [ ] Player input / camera setup (third-person camera boom + spring arm)
-- [ ] Team NPC base class
-- [ ] Save/load system
-- [ ] UI / HUD
-- [ ] Any art assets
-- [ ] Puzzle design for any scale
-
----
-
-## 10. Immediate Next Steps (start here in new session)
-
-1. Open Unreal Editor ? Project Settings ? Maps & Modes
-2. Set Default GameMode to LatticeGameMode
-3. Create a new level saved to Content/Scales/MACRO/Maps/
-4. Place an AncientTechDevice in the level
-5. Test that activating it changes the scale and physics
+1. **Read this document at the start of every session before giving any advice or writing any code**
+2. **Explain the why, not just the what** â€” every architectural decision should be documented here
+3. **Small steps** â€” a few tasks at a time, confirm working before moving on
+4. **Don't invent status** â€” if something has not been tested, mark it NO or PARTIAL, not YES
+5. **Commit Blueprint assets immediately** after creation â€” they do not auto-track in git
+6. **Update Current State table** at the end of each working session
+7. **Do not redesign existing systems** without flagging it explicitly and getting confirmation
+8. **Physics accuracy first** â€” when in doubt, research the real science before implementing
 
 ---
 
-## 11. Conventions & Notes
+## Known Gotchas
 
-- Regina is a solo dev with beginner coding knowledge — keep steps small
-- Windows 11 / PowerShell — no bash/Linux commands
-- Use Developer PowerShell (from Visual Studio Tools menu) for CLI work
-- Use heredoc style (@' '@) for writing code files from PowerShell
-- Compile method: Ctrl+Alt+F11 in Unreal Editor (Live Coding)
-- Avoid nano — Regina prefers CLI tools
-- LF/CRLF warnings on git add are harmless, ignore them
-- Always commit and push at the end of each working session
+- `.uasset` files are binary â€” git LFS is active on this repo, that is expected and correct
+- `BP_LatticePlayerCharacter` was lost in a crash/reclone because it was not committed â€” always commit Blueprint assets immediately
+- Developer PowerShell is accessed from Windows search, not from inside Visual Studio
+- Git pathspec must include the inner `LATTICE/` prefix when run from repo root
