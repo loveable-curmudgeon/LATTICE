@@ -1,4 +1,4 @@
-﻿#include "AncientTechDevice.h"
+#include "AncientTechDevice.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -14,6 +14,7 @@ AAncientTechDevice::AAncientTechDevice()
     TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("TriggerSphere"));
     TriggerSphere->SetupAttachment(RootComponent);
     TriggerSphere->SetSphereRadius(200.0f);
+    TriggerSphere->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
     TriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &AAncientTechDevice::OnOverlapBegin);
 }
 
@@ -28,6 +29,7 @@ void AAncientTechDevice::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
     bool bFromSweep, const FHitResult& SweepResult)
 {
+    UE_LOG(LogTemp, Warning, TEXT("Overlap fired with: %s"), *OtherActor->GetName());
     if (OtherActor && OtherActor->ActorHasTag(TEXT("Player")))
     {
         Activate();
@@ -39,5 +41,6 @@ void AAncientTechDevice::Activate()
     if (bHasBeenActivated) return;
     if (!ScaleManager) return;
     bHasBeenActivated = true;
+    UE_LOG(LogTemp, Warning, TEXT("AncientTechDevice Activated! Transitioning scale..."));
     ScaleManager->TransitionToScale(TargetScale);
 }

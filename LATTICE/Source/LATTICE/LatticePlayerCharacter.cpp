@@ -13,6 +13,7 @@ ALatticePlayerCharacter::ALatticePlayerCharacter()
 void ALatticePlayerCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    Tags.Add(FName("Player"));
     UGameInstance* GI = UGameplayStatics::GetGameInstance(this);
     ScaleManager = GI->GetSubsystem<ULatticeScaleManager>();
     if (ScaleManager)
@@ -27,6 +28,9 @@ void ALatticePlayerCharacter::BeginPlay()
         {
             Subsystem->AddMappingContext(DefaultMappingContext, 0);
         }
+        FInputModeGameOnly InputMode;
+        PC->SetInputMode(InputMode);
+        PC->SetShowMouseCursor(false);
     }
 }
 
@@ -42,6 +46,7 @@ void ALatticePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
     {
         EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALatticePlayerCharacter::Move);
         EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ALatticePlayerCharacter::Jump);
+        EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ALatticePlayerCharacter::Look);
     }
 }
 
@@ -53,6 +58,13 @@ void ALatticePlayerCharacter::Move(const FInputActionValue& Value)
         AddMovementInput(GetActorForwardVector(), MovementVector.Y);
         AddMovementInput(GetActorRightVector(), MovementVector.X);
     }
+}
+
+void ALatticePlayerCharacter::Look(const FInputActionValue& Value)
+{
+    FVector2D LookVector = Value.Get<FVector2D>();
+    AddControllerYawInput(LookVector.X);
+    AddControllerPitchInput(LookVector.Y);
 }
 
 void ALatticePlayerCharacter::Jump()

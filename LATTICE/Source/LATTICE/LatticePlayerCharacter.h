@@ -23,6 +23,7 @@ protected:
     void OnScaleChanged(ELatticeScale OldScale, ELatticeScale NewScale);
     void ApplyScalePhysics(ELatticeScale Scale);
     void Move(const FInputActionValue& Value);
+    void Look(const FInputActionValue& Value);
     void Jump();
 
     UPROPERTY(EditDefaultsOnly, Category="Input")
@@ -33,6 +34,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category="Input")
     UInputAction* JumpAction;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+    UInputAction* LookAction;
 
 private:
     UPROPERTY()
