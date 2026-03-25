@@ -85,8 +85,10 @@ open LATTICE-DESIGN to resolve it.
 
 #### AncientTechDevice (AActor subclass)
 - Placed in levels as the trigger for scale transitions
+- Has a USphereComponent (radius 200) that triggers on player overlap
 - Calls `ScaleManager->TransitionToScale(TargetScale)` on activation
 - One-shot by default (`bHasBeenActivated` flag)
+- Requires the player actor to have the tag "Player" to trigger
 
 #### Scale Enum (ELatticeScale)
 Six scales defined: MACRO, MICRO, NANO, QUANTUM, GEO, COSMIC
@@ -94,7 +96,7 @@ Each has its own physics profile. MACRO is human scale and the starting point.
 Physics values must be reviewed against real science before any scale goes into active development.
 
 ### Blueprint Assets (must be committed to git immediately after creation)
-- `BP_LatticePlayerCharacter` — inherits LatticePlayerCharacter, has input assets assigned
+- `BP_LatticePlayerCharacter` — inherits LatticePlayerCharacter, has input assets assigned, has "Player" tag
 - `BP_LatticeGameMode` — sets BP_LatticePlayerCharacter as Default Pawn Class
 
 ### Input Assets (Content/Core/)
@@ -113,18 +115,22 @@ Physics values must be reviewed against real science before any scale goes into 
 | Player spawns and moves | YES |
 | BP_LatticePlayerCharacter committed to git | YES |
 | BP_LatticeGameMode committed to git | YES |
-| Scale transition tested in game | NO |
-| AncientTechDevice placed in level | NO |
-| MACRO_Level_01 playable | PARTIAL - floor and spawn point only |
+| Scale transition tested in game | YES |
+| AncientTechDevice placed in level | YES |
+| MACRO_Level_01 playable | PARTIAL - floor, spawn, device, basic lighting |
+| Mouse look working in Play mode | NO |
 | Physics values reviewed against real science | NO |
 
 ---
 
 ## Active Phase
 
-**Phase 0 - Foundation Verified** - we are here
-Next task: Write LATTICE_BUILD_PLAN.md, then place AncientTechDevice in MACRO_Level_01
-and trigger one scale transition.
+**Phase 1 - Core Loop Prototype — IN PROGRESS**
+
+Scale transition fires confirmed. Next tasks:
+- Fix mouse look in Play mode
+- Make AncientTechDevice visible (assign a placeholder mesh)
+- Verify physics parameters actually change when transition fires
 
 See `LATTICE_BUILD_PLAN.md` for full phase breakdown.
 
@@ -149,3 +155,5 @@ See `LATTICE_BUILD_PLAN.md` for full phase breakdown.
 - `BP_LatticePlayerCharacter` was lost in a crash/reclone because it was not committed — always commit Blueprint assets immediately
 - Developer PowerShell is accessed from Windows search, not from inside Visual Studio
 - Git pathspec must include the inner `LATTICE/` prefix when run from repo root
+- AncientTechDevice has no visible mesh yet — it is invisible in Play mode but the trigger sphere works
+- Mouse look does not work in Play mode yet — needs investigation
