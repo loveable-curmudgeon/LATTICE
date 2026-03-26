@@ -211,3 +211,4 @@ No scale content phase begins without the physics reference for that scale being
 3. Mark phases complete only when all deliverables exist and are committed to git
 4. Each scale phase must begin with a physics review session before any content is built
 5. This document is updated at the end of every working session
+
