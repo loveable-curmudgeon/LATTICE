@@ -1,4 +1,4 @@
-ï»¿# LATTICE_CONTROL.md
+# LATTICE_CONTROL.md
 _Master context document. Every new chat session working on LATTICE-CODE must read this first._
 
 ---
@@ -9,13 +9,13 @@ _Master context document. Every new chat session working on LATTICE-CODE must re
 
 Inspired by the short film *Powers of Ten*, the game follows a joint military/science team
 investigating ancient technology uncovered after a natural disaster exposes a buried temple.
-The tech sends team members to different physical scales â€” from human scale down to atomic,
+The tech sends team members to different physical scales — from human scale down to atomic,
 and up to geological and cosmic. Physics behaves differently at each scale, grounded in real
 science. The player must solve scale-specific puzzles to locate and rescue team members, who
 then join future levels as playable or supporting characters.
 
 LATTICE is an educational game first. The goal is to make educational games that are actually
-fun. Physics accuracy is a core design value â€” parameters must be scientifically grounded, not
+fun. Physics accuracy is a core design value — parameters must be scientifically grounded, not
 just whatever feels good. A separate reference document in LATTICE-DESIGN tracks the scientific
 basis for each scale's physics profile.
 
@@ -40,7 +40,7 @@ This is a long-term solo project.
 
 ## Hardware Notes
 
-- 16GB RAM â€” close all other apps before opening Unreal
+- 16GB RAM — close all other apps before opening Unreal
 - No browser, Discord, or Spotify while working
 - Skip "restore asset editors" prompt on launch (can cause crashes)
 - Save frequently with Ctrl+S
@@ -63,7 +63,7 @@ This is a long-term solo project.
 |---|---|
 | **LATTICE-CODE** (this project) | Engine, C++, Blueprints, systems architecture, build plan |
 | **LATTICE-STORY** | Lore bible, character profiles, dialog, world history, narrative |
-| **LATTICE-DESIGN** | Game design document, puzzle specs, level briefs, physics reference â€” bridges mechanics and story |
+| **LATTICE-DESIGN** | Game design document, puzzle specs, level briefs, physics reference — bridges mechanics and story |
 
 Design decisions must respect both code constraints and story logic. When they conflict,
 open LATTICE-DESIGN to resolve it.
@@ -73,16 +73,16 @@ open LATTICE-DESIGN to resolve it.
 ## Architecture Overview
 
 ### Core Philosophy
-- **Make LATTICE excellent** â€” purpose-built decisions are fine, do not sacrifice quality for reusability
-- **Reusability is a bonus, not a goal** â€” if something is naturally reusable, great, but don't engineer for it
-- **C++ for systems** â€” anything that needs to be fast, shared, or data-driven
-- **Blueprint for content** â€” level-specific logic, designer-facing configuration, one-off behaviors
-- **Physics accuracy is non-negotiable** â€” every scale must reflect real science
+- **Make LATTICE excellent** — purpose-built decisions are fine, do not sacrifice quality for reusability
+- **Reusability is a bonus, not a goal** — if something is naturally reusable, great, but don't engineer for it
+- **C++ for systems** — anything that needs to be fast, shared, or data-driven
+- **Blueprint for content** — level-specific logic, designer-facing configuration, one-off behaviors
+- **Physics accuracy is non-negotiable** — every scale must reflect real science
 
 ### Key Systems
 
 #### LatticeScaleManager (GameInstanceSubsystem)
-- Lives on the GameInstance â€” persists across level loads
+- Lives on the GameInstance — persists across level loads
 - Single source of truth for current scale state
 - Broadcasts `OnScaleChanged` delegate when scale transitions occur
 - All other systems react to this delegate rather than polling
@@ -111,7 +111,7 @@ Physics values must be reviewed against real science before any scale goes into 
 
 ---
 
-## Scale Physics Values (current â€” not yet scientifically verified)
+## Scale Physics Values (current — not yet scientifically verified)
 
 | Scale   | Gravity | Speed | Jump | Air Resistance |
 |---------|---------|-------|------|----------------|
@@ -126,15 +126,15 @@ Physics values must be reviewed against real science before any scale goes into 
 
 ## Blueprint Assets (must be committed to git immediately after creation)
 
-### BP_LatticePlayerCharacter â€” Content/Characters/Player/
+### BP_LatticePlayerCharacter — Content/Characters/Player/
 - Inherits LatticePlayerCharacter
 - Spring Arm: Length 300, Socket Offset Z: 60, Use Pawn Control Rotation: true
 - Camera attached to Spring Arm
 - Class Defaults: MoveAction=IA_Move, JumpAction=IA_Jump, LookAction=IA_Look
 - Has "Player" actor tag assigned
-- **GOTCHA:** Blueprint input assignments clear on recompile â€” always check Class Defaults after rebuild
+- **GOTCHA:** Blueprint input assignments clear on recompile — always check Class Defaults after rebuild
 
-### BP_LatticeGameMode â€” Content/Core/GameMode/
+### BP_LatticeGameMode — Content/Core/GameMode/
 - Default Pawn Class: BP_LatticePlayerCharacter
 - Set as default GameMode in Project Settings > Maps & Modes
 
@@ -142,18 +142,18 @@ Physics values must be reviewed against real science before any scale goes into 
 
 ## Input Assets (Content/Core/)
 
-- `IMC_Default` â€” Input Mapping Context
-  - `IA_Move` â€” WASD. S and A keys have Negate modifier. W has Swizzle+Negate.
-  - `IA_Jump` â€” Spacebar
-  - `IA_Look` â€” Mouse XY 2D-Axis
+- `IMC_Default` — Input Mapping Context
+  - `IA_Move` — WASD. S and A keys have Negate modifier. W has Swizzle+Negate.
+  - `IA_Jump` — Spacebar
+  - `IA_Look` — Mouse XY 2D-Axis
 
 ---
 
 ## Levels
 
-### MACRO_Level_01 â€” Content/Scales/MACRO/Maps/
+### MACRO_Level_01 — Content/Scales/MACRO/Maps/
 - Floor plane: Location 0,0,0, Scale 50,50,1, material M_PurpleFloor
-- AncientTechDevice placed and working â€” walk into it triggers scale transition
+- AncientTechDevice placed and working — walk into it triggers scale transition
 - Physics transition verified via UE_LOG (2026-03-24)
 
 ---
@@ -171,7 +171,7 @@ Physics values must be reviewed against real science before any scale goes into 
 | AncientTechDevice placed in level | YES |
 | AncientTechDevice visible mesh | YES |
 | Scale transition tested in game | YES |
-| MACRO_Level_01 playable | PARTIAL â€” floor, spawn, device, mouse look, physics verified |
+| MACRO_Level_01 playable | PARTIAL — floor, spawn, device, mouse look, physics verified |
 | Physics values reviewed against real science | NO |
 | Debug UE_LOG removed from AncientTechDevice.cpp | YES |
 
@@ -179,9 +179,10 @@ Physics values must be reviewed against real science before any scale goes into 
 
 ## Active Phase
 
-**Phase 1 â€” Core Loop Prototype: IN PROGRESS**
+**Phase 1 — Core Loop Prototype: COMPLETE**
 
-Remaining: placeholder team member, placeholder portal, basic scale HUD
+
+Phase 2 — Character and Companion System: NOT STARTED
 
 See `docs/LATTICE_BUILD_PLAN.md` for full phase breakdown.
 
@@ -190,21 +191,21 @@ See `docs/LATTICE_BUILD_PLAN.md` for full phase breakdown.
 ## Rules for This Project
 
 1. **Read this document at the start of every session before giving any advice or writing any code**
-2. **Explain the why, not just the what** â€” every architectural decision should be documented here
-3. **Small steps** â€” a few tasks at a time, confirm working before moving on
-4. **Don't invent status** â€” if something has not been tested, mark it NO or PARTIAL, not YES
-5. **Commit Blueprint assets immediately** after creation â€” they do not auto-track in git
+2. **Explain the why, not just the what** — every architectural decision should be documented here
+3. **Small steps** — a few tasks at a time, confirm working before moving on
+4. **Don't invent status** — if something has not been tested, mark it NO or PARTIAL, not YES
+5. **Commit Blueprint assets immediately** after creation — they do not auto-track in git
 6. **Update Current State table** at the end of each working session
 7. **Do not redesign existing systems** without flagging it explicitly and getting confirmation
-8. **Physics accuracy first** â€” when in doubt, research the real science before implementing
+8. **Physics accuracy first** — when in doubt, research the real science before implementing
 
 ---
 
 ## Known Gotchas
 
-- `.uasset` files are binary â€” git LFS is active on this repo, that is expected and correct
-- `BP_LatticePlayerCharacter` was lost in a crash/reclone because it was not committed â€” always commit Blueprint assets immediately
+- `.uasset` files are binary — git LFS is active on this repo, that is expected and correct
+- `BP_LatticePlayerCharacter` was lost in a crash/reclone because it was not committed — always commit Blueprint assets immediately
 - Developer PowerShell is accessed from Windows search, not from inside Visual Studio
-- Blueprint input assignments (MoveAction, JumpAction, LookAction) clear on recompile â€” always recheck Class Defaults after rebuild
+- Blueprint input assignments (MoveAction, JumpAction, LookAction) clear on recompile — always recheck Class Defaults after rebuild
 - Debug UE_LOG statements removed from AncientTechDevice.cpp
 - Control docs live in `docs/` at repo root, not inside the LATTICE project folder
