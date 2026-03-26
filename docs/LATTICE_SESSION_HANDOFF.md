@@ -6,58 +6,60 @@ _Full context is in Project Knowledge: LATTICE_CONTROL.md and LATTICE_BUILD_PLAN
 
 ## Current Phase
 
-**Phase:** <!-- e.g. Phase 2 — Character & Companion System -->
-**Status:** <!-- NOT STARTED / IN PROGRESS / COMPLETE -->
+**Phase:** Phase 2 — Character & Companion System
+**Status:** NOT STARTED
 
 ---
 
 ## Last Session
 
-**Date:** <!-- YYYY-MM-DD -->
+**Date:** 2026-03-24
 **What happened:**
-<!-- One or two sentences. What did we actually do? What was the outcome? -->
+AncientTechDevice placed and working in MACRO_Level_01. Scale transition tested
+in game via UE_LOG. Debug logs removed from AncientTechDevice.cpp. Phase 1 complete.
 
 ---
 
 ## Current State Snapshot
 
-<!-- Copy the relevant rows from LATTICE_CONTROL.md Current State table.
-     Only include items that changed recently or are actively in progress.
-     Full table is in LATTICE_CONTROL.md. -->
-
 | Item | Status |
 |---|---|
-| <!-- thing --> | <!-- YES / NO / PARTIAL - note --> |
+| Project opens in UE 5.7 | YES |
+| C++ compiles clean | YES |
+| Player spawns and moves | YES |
+| Mouse look working in Play mode | YES |
+| AncientTechDevice triggers scale transition | YES |
+| Scale transition tested in game | YES |
+| MACRO_Level_01 playable | PARTIAL - floor, spawn, device, physics verified. No team member, no portal, no HUD. |
+| Phase 1 complete | YES |
+| Phase 2 started | NO |
+| Physics values reviewed against real science | NO |
 
 ---
 
 ## Next 3 Actions
 
-<!-- Specific. Actionable. In order. Not "work on Phase 2" -- actual next steps. -->
-
-1.
-2.
-3.
+1. Review Phase 2 entry criteria in LATTICE_BUILD_PLAN.md
+2. Design character data structure (name, profile, mesh slot) in C++
+3. Build basic character selection screen (functional only, no polish)
 
 ---
 
 ## Open Questions / Blockers
 
-<!-- Anything waiting on a decision, research, or external input. -->
-<!-- Leave blank if none. -->
+- Phase 1 exit criteria require a placeholder team member, portal, and HUD.
+  These are not marked complete in LATTICE_CONTROL.md. Confirm whether
+  Phase 1 is truly done or needs those deliverables before Phase 2 starts.
 
 ---
 
 ## Decisions Made This Session
 
-<!-- Log any architectural or design decisions made. Brief. -->
-<!-- "Decided to use X instead of Y because Z." -->
-<!-- These prevent relitigating the same questions. -->
+None recorded.
 
 ---
 
 ## Warnings / Gotchas Active Right Now
 
-<!-- Anything the AI needs to know that is not in LATTICE_CONTROL.md yet. -->
-<!-- Temporary mid-session state, half-done work, known broken things. -->
-<!-- Clear this out once resolved or promoted to LATTICE_CONTROL.md. -->
+- BP input assignments (MoveAction, JumpAction, LookAction) clear on recompile.
+  Always check BP_LatticePlayerCharacter Class Defaults after any rebuild.
